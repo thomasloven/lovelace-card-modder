@@ -14,13 +14,12 @@ class CardModder extends Polymer.Element {
     this.appendChild(this.card);
   }
 
-  ready() {
-    super.ready();
-
-    this.card.ready();
+  connectedCallback() {
     let target = this.card;
     if(this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card")) {
       target = this.card.shadowRoot.querySelector("ha-card");
+    } else if (this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card")) {
+      target = this.card.firstChild.shadowRoot.querySelector("ha-card");
     }
     for(var k in this._config.style) {
       target.style.setProperty(k, this._config.style[k]);
