@@ -11,23 +11,32 @@ class CardModder extends Polymer.Element {
 
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
-    this.appendChild(this.card);
+
+    if(this.$) this._cardMod();
   }
 
-  connectedCallback() {
+  ready() {
+    super.ready();
+    if(this._config) this._cardMod();
+  }
+
+  _cardMod() {
+    this.appendChild(this.card);
+
     let target = this.card;
     if(this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card")) {
       target = this.card.shadowRoot.querySelector("ha-card");
-    } else if (this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card")) {
+    } else if(this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card")) {
       target = this.card.firstChild.shadowRoot.querySelector("ha-card");
     }
+
     for(var k in this._config.style) {
       target.style.setProperty(k, this._config.style[k]);
     }
   }
 
   set hass(hass) {
-    this.card.hass = hass;
+    if(this.card) this.card.hass = hass;
   }
 
   getCardSize() {
