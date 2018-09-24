@@ -26,6 +26,8 @@ class CardModder extends Polymer.Element {
     let target = this.card;
     if(this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card")) {
       target = this.card.shadowRoot.querySelector("ha-card");
+    } else if(this.card.querySelector("ha-card")) {
+      target = this.card.querySelector("ha-card");
     } else if(this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card")) {
       target = this.card.firstChild.shadowRoot.querySelector("ha-card");
     }
