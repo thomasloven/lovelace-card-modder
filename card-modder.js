@@ -11,10 +11,14 @@ class CardModder extends Polymer.Element {
 
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
+    this.primaryStyle = null;
 
     if(this.card.updateComplete) {
       this.card.updateComplete.then( () => {
         this._cardMod();
+        this.card.updateComplete.then( () => {
+          this._cardMod();
+        });
       });
     } else if(this.$) {
       this._cardMod();
@@ -32,6 +36,11 @@ class CardModder extends Polymer.Element {
     this.appendChild(this.card);
 
     let target = this.card;
+    if (this.primaryStyle) {
+      target.style = this.primaryStyle;
+    } else {
+      this.primaryStyle = target.style;
+    }
     if(this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card")) {
       target = this.card.shadowRoot.querySelector("ha-card");
     } else if(this.card.querySelector("ha-card")) {
@@ -43,6 +52,7 @@ class CardModder extends Polymer.Element {
     for(var k in this._config.style) {
       target.style.setProperty(k, this._config.style[k]);
     }
+
   }
 
   set hass(hass) {
