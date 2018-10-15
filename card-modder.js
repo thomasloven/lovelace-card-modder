@@ -12,12 +12,20 @@ class CardModder extends Polymer.Element {
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
 
-    if(this.$) this._cardMod();
+    if(this.card.updateComplete) {
+      this.card.updateComplete.then( () => {
+        this._cardMod();
+      });
+    } else if(this.$) {
+      this._cardMod();
+    }
   }
 
   ready() {
     super.ready();
-    if(this._config) this._cardMod();
+    if(! this.card.updateComplete) {
+      if(this._config) this._cardMod();
+    }
   }
 
   _cardMod() {
