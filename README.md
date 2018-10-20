@@ -1,3 +1,12 @@
+# NOTE! THIS CARD MUST BE IMPORTED AS A MODULE!
+
+```yaml
+resources:
+  - url: /local/card-modder.js
+    type: module
+```
+
+
 ```yaml
       - type: custom:card-modder
         card:
