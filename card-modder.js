@@ -1,53 +1,59 @@
-class CardModder extends Polymer.Element {
+import {html, LitElement} from "https://unpkg.com/@polymer/lit-element?module";
+class CardModder extends LitElement {
 
-  setConfig(config) {
-    this._config = config;
+  static get properties() {
+    return {
+      hass: Object,
+      config: Object,
+    };
+  }
 
-    let tag = config.card.type;
+  render()
+  {
+    return html`${this.card}`;
+  }
+
+  async setConfig(config) {
+    this.config = config;
+
+    let tag = this.config.card.type;
     if(tag.startsWith("custom:"))
       tag = tag.substr(7);
     else
       tag = `hui-${tag}-card`;
-
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
 
     if(this.card.updateComplete) {
-      this.card.updateComplete.then( () => {
-        this._cardMod();
-        this.card.updateComplete.then( () => {
-          this._cardMod();
-        });
-      });
-    } else if(this.$) {
-      this._cardMod();
+      await this.card.updateComplete;
     }
+    this._cardMod();
   }
 
-  ready() {
-    super.ready();
-    if(! this.card.updateComplete) {
-      if(this._config) this._cardMod();
-    }
-  }
-
-  _cardMod() {
-    this.appendChild(this.card);
-
+  async _cardMod() {
     let target = this.card;
-    for(var k in this._config.style) {
-      target.style.removeProperty(k);
-    }
-    if(this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card")) {
-      target = this.card.shadowRoot.querySelector("ha-card");
-    } else if(this.card.querySelector("ha-card")) {
-      target = this.card.querySelector("ha-card");
-    } else if(this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card")) {
-      target = this.card.firstChild.shadowRoot.querySelector("ha-card");
+
+    let maxDelay = 5000;
+    while(maxDelay) {
+      if(this.card.shadowRoot &&
+          this.card.shadowRoot.querySelector("ha-card")) {
+        target = this.card.shadowRoot.querySelector("ha-card");
+        break;
+      } else if(this.card.querySelector("ha-card")) {
+        target = this.card.querySelector("ha-card");
+        break;
+      } else if(this.card.firstChild && this.card.firstChild.shadowRoot &&
+          this.card.firstChild.shadowRoot.querySelector("ha-card")) {
+        target = this.card.firstChild.shadowRoot.querySelector("ha-card");
+        break;
+      }
+
+      maxDelay -= 100;
+      await new Promise(resolve => setTimeout( () => resolve() , 100));
     }
 
-    for(var k in this._config.style) {
-      target.style.setProperty(k, this._config.style[k]);
+    for(var k in this.config.style) {
+      target.style.setProperty(k, this.config.style[k]);
     }
 
   }
