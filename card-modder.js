@@ -1,12 +1,4 @@
-import {html, LitElement} from "https://unpkg.com/@polymer/lit-element?module";
-class CardModder extends LitElement {
-
-  static get properties() {
-    return {
-      hass: Object,
-      config: Object,
-    };
-  }
+class CardModder extends HTMLElement {
 
   render()
   {
@@ -28,6 +20,8 @@ class CardModder extends LitElement {
       await this.card.updateComplete;
     }
     this._cardMod();
+
+    this.appendChild(this.card);
   }
 
   async _cardMod() {
@@ -59,6 +53,7 @@ class CardModder extends LitElement {
   }
 
   set hass(hass) {
+    if(!hass) return;
     if(this.card) this.card.hass = hass;
   }
 
