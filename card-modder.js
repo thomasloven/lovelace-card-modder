@@ -15,16 +15,16 @@ class CardModder extends HTMLElement {
       tag = `hui-${tag}-card`;
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
+    this.appendChild(this.card);
 
     if(this.card.updateComplete) {
       await this.card.updateComplete;
     }
     this._cardMod();
-
-    this.appendChild(this.card);
   }
 
   async _cardMod() {
+    if(!this.config.style) return;
     let target = this.card;
 
     let maxDelay = 5000;
@@ -58,7 +58,7 @@ class CardModder extends HTMLElement {
   }
 
   getCardSize() {
-    return this.card.getCardSize();
+    return this.config.report_size ? this.config.report_size : this.card.getCardSize();
   }
 }
 
