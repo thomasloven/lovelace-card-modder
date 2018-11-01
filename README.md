@@ -6,6 +6,7 @@ Allows you to style a home-assistant lovelace card
 
 | Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
+| type | string | **Required** | `custom:card-modder`
 | card | object | **Required** | The card you wish to style
 | style | list | none | List of css styles to apply to card
 | report_size | number | none | Size to report
