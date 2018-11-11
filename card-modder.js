@@ -28,6 +28,7 @@ class CardModder extends HTMLElement {
     let target = this.card;
 
     let maxDelay = 5000;
+    if(this.config.card.type.endsWith("-row")) maxDelay = 0;
     while(maxDelay) {
       if(this.card.shadowRoot &&
           this.card.shadowRoot.querySelector("ha-card")) {
