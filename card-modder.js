@@ -1,10 +1,5 @@
 class CardModder extends HTMLElement {
 
-  render()
-  {
-    return html`${this.card}`;
-  }
-
   async setConfig(config) {
     this.config = config;
 
@@ -15,6 +10,7 @@ class CardModder extends HTMLElement {
       tag = `hui-${tag}-card`;
     this.card = document.createElement(tag);
     this.card.setConfig(config.card);
+    this.card.style.display = 'block';
     this.appendChild(this.card);
 
     if(this.card.updateComplete) {
