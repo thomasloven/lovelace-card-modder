@@ -2,6 +2,8 @@
 
 Allows you to style a home-assistant lovelace card
 
+This card requires [card-tools](https://github.com/thomasloven/lovelace-card-tools) to be installed.
+
 ## Options
 
 | Name | Type | Default | Description
@@ -9,7 +11,7 @@ Allows you to style a home-assistant lovelace card
 | type | string | **Required** | `custom:card-modder`
 | card | object | **Required** | The card you wish to style
 | style | list | none | List of css styles to apply to card
-| report_size | number | none | Size to report
+| report\_size | number | none | Size to report
 
 # Styling
 

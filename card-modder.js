@@ -1,61 +1,47 @@
-class CardModder extends HTMLElement {
+var LitElement = LitElement || Object.getPrototypeOf(customElements.get('hui-error-entity-row'));
+class CardModder extends LitElement {
 
   async setConfig(config) {
-    this.config = config;
+    if(!window.cardTools) throw new Error(`Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools`);
+    window.cardTools.checkVersion(0.1);
 
-    let tag = this.config.card.type;
-    if(tag.startsWith("custom:"))
-      tag = tag.substr(7);
-    else
-      tag = `hui-${tag}-card`;
-    this.card = document.createElement(tag);
-    this.card.setConfig(config.card);
-    this.card.style.display = 'block';
-    this.appendChild(this.card);
-
-    if(this.card.updateComplete) {
-      await this.card.updateComplete;
+    if(!config || !config.card) {
+      throw new Error("Card config incorrect");
     }
+    this._config = config;
+    this.card = window.cardTools.createCard(config.card);
+  }
+
+  render() {
+    return window.cardTools.litHtml`
+    <div id="root">${this.card}</div>
+    `;
+  }
+
+  firstUpdated() {
     this._cardMod();
   }
 
-  async _cardMod() {
-    if(!this.config.style) return;
-    let target = this.card;
+  _cardMod() {
+    if(!this._config.style) return;
 
-    let maxDelay = 5000;
-    if(this.config.card.type.endsWith("-row")) maxDelay = 0;
-    while(maxDelay) {
-      if(this.card.shadowRoot &&
-          this.card.shadowRoot.querySelector("ha-card")) {
-        target = this.card.shadowRoot.querySelector("ha-card");
-        break;
-      } else if(this.card.querySelector("ha-card")) {
-        target = this.card.querySelector("ha-card");
-        break;
-      } else if(this.card.firstChild && this.card.firstChild.shadowRoot &&
-          this.card.firstChild.shadowRoot.querySelector("ha-card")) {
-        target = this.card.firstChild.shadowRoot.querySelector("ha-card");
-        break;
-      }
+    let target = null;
+    target = target || this.card.querySelector("ha-card");
+    target = target || this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card");
+    target = target || this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card");
+    target = target || this.card;
 
-      maxDelay -= 100;
-      await new Promise(resolve => setTimeout( () => resolve() , 100));
+    for(var k in this._config.style) {
+      target.style.setProperty(k, this._config.style[k]);
     }
-
-    for(var k in this.config.style) {
-      target.style.setProperty(k, this.config.style[k]);
-    }
-
   }
 
   set hass(hass) {
-    if(!hass) return;
     if(this.card) this.card.hass = hass;
   }
 
   getCardSize() {
-    return this.config.report_size ? this.config.report_size : this.card.getCardSize();
+    return this._config.report_size ? this._config.report_size : this.card ? this.card.getCardSize() : 1;
   }
 }
 
