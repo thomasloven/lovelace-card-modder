@@ -47,6 +47,28 @@ styling options manually.
 ```
 ![card-modder-styling](https://user-images.githubusercontent.com/1299821/47842006-b92a9a80-ddbb-11e8-915a-9d54f7e62a5e.png)
 
+## Templates
+
+A simple form of templates can be used in the styles.
+Templates are on the form `[[ domain.entity.state ]]` or `[[ domain.entity.attributes.attribute_name ]]`.
+
+```yaml
+- type: custom:card-modder
+  style:
+    background-image: "url(http://www.place[[ input_select.background.state ]].com/600/250)"
+  card:
+    type: entities
+    entities:
+      - input_select.background
+      - type: custom:card-modder
+        card:
+          type: custom:hui-toggle-entity-row
+          entity: light.bed_light
+        style: {color: blue}
+      - light.bed_light
+      - light.bed_light
+```
+![skarminspelning 2018-12-13 kl 00 05 45 mov](https://user-images.githubusercontent.com/1299821/49904941-3261e680-fe6c-11e8-8d7d-25b6fbbfc9bf.gif)
 
 
 # Forcing size

@@ -3,13 +3,14 @@ class CardModder extends LitElement {
 
   async setConfig(config) {
     if(!window.cardTools) throw new Error(`Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools`);
-    window.cardTools.checkVersion(0.1);
+    window.cardTools.checkVersion(0.2);
 
     if(!config || !config.card) {
       throw new Error("Card config incorrect");
     }
     this._config = config;
     this.card = window.cardTools.createCard(config.card);
+    this.templated = [];
   }
 
   render() {
@@ -32,12 +33,18 @@ class CardModder extends LitElement {
     target = target || this.card;
 
     for(var k in this._config.style) {
-      target.style.setProperty(k, this._config.style[k]);
+      if(window.cardTools.hasTemplate(this._config.style[k]))
+        this.templated.push(k);
+      target.style.setProperty(k, window.cardTools.parseTemplate(this._config.style[k]));
     }
+    this.target = target;
   }
 
   set hass(hass) {
     if(this.card) this.card.hass = hass;
+    this.templated.forEach((k) => {
+      this.target.style.setProperty(k, window.cardTools.parseTemplate(this._config.style[k], ''));
+    });
   }
 
   getCardSize() {
