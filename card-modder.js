@@ -42,9 +42,10 @@ class CardModder extends LitElement {
 
   set hass(hass) {
     if(this.card) this.card.hass = hass;
-    this.templated.forEach((k) => {
-      this.target.style.setProperty(k, window.cardTools.parseTemplate(this._config.style[k], ''));
-    });
+    if(this.templated)
+      this.templated.forEach((k) => {
+        this.target.style.setProperty(k, window.cardTools.parseTemplate(this._config.style[k], ''));
+      });
   }
 
   getCardSize() {
