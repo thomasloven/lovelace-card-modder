@@ -5,10 +5,11 @@ class CardModder extends LitElement {
     if(!window.cardTools) throw new Error(`Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools`);
     window.cardTools.checkVersion(0.2);
 
+    this._config = config;
+
     if(!config || !config.card) {
       throw new Error("Card config incorrect");
     }
-    this._config = config;
     this.card = window.cardTools.createCard(config.card);
     this.templated = [];
   }
