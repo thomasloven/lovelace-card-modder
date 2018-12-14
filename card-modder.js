@@ -1,12 +1,15 @@
 var LitElement = LitElement || Object.getPrototypeOf(customElements.get('hui-error-entity-row'));
 class CardModder extends LitElement {
 
-  async setConfig(config) {
+  setConfig(config) {
     if(!window.cardTools) throw new Error(`Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools`);
     window.cardTools.checkVersion(0.2);
 
     if(!config || !config.card) {
       throw new Error("Card config incorrect");
+    }
+    if(Array.isArray(config.card)) {
+      throw new Error("It says 'card', not 'cardS'. Remove the dash.");
     }
     this._config = config;
     this.card = window.cardTools.createCard(config.card);
