@@ -5,11 +5,10 @@ class CardModder extends LitElement {
     if(!window.cardTools) throw new Error(`Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools`);
     window.cardTools.checkVersion(0.2);
 
-    this._config = config;
-
     if(!config || !config.card) {
       throw new Error("Card config incorrect");
     }
+    this._config = config;
     this.card = window.cardTools.createCard(config.card);
     this.templated = [];
   }
@@ -50,7 +49,11 @@ class CardModder extends LitElement {
   }
 
   getCardSize() {
-    return this._config.report_size ? this._config.report_size : this.card ? this.card.getCardSize() : 1;
+    if(this._config && this._config.report_size)
+      return this._config.report_size;
+    if(this.card)
+      return typeof this.card.getCardSize === "function" ? this.card.getCardSize() : 1;
+    return 1;
   }
 }
 
