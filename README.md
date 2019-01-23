@@ -4,6 +4,8 @@ Allows you to style a home-assistant lovelace card
 
 This card requires [card-tools](https://github.com/thomasloven/lovelace-card-tools) to be installed.
 
+For installation instructions [see this guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins).
+
 ## Options
 
 | Name | Type | Default | Description
