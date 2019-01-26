@@ -41,8 +41,10 @@ class CardModder extends cardTools.litElement() {
     for(var k in this._config.style) {
       if(cardTools.hasTemplate(this._config.style[k]))
         this.templated.push(k);
-      this.card.style.setProperty(k, '');
-      target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
+      if(this.card.style.setProperty)
+        this.card.style.setProperty(k, '');
+      if(target.style.setProperty)
+        target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
     }
     this.target = target;
   }
