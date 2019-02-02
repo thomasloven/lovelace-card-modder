@@ -47,6 +47,8 @@ styling options manually.
     - light.ceiling_lights
     - light.kitchen_lights
 ```
+
+**Note about rounded corners:** Some cards which have a background image needs the style `overflow: hidden` added for rounded corners to work.
 ![card-modder-styling](https://user-images.githubusercontent.com/1299821/47842006-b92a9a80-ddbb-11e8-915a-9d54f7e62a5e.png)
 
 ## Templates
