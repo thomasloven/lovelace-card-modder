@@ -1,6 +1,12 @@
 customElements.whenDefined('card-tools').then(() => {
 class CardModder extends cardTools.litElement() {
 
+  static get properties() {
+    return {
+      card: {},
+    };
+  }
+
   setConfig(config) {
     cardTools.checkVersion(0.3);
 
@@ -10,10 +16,20 @@ class CardModder extends cardTools.litElement() {
     if(Array.isArray(config.card)) {
       throw new Error("It says 'card', not 'cardS'. Remove the dash.");
     }
-    this._config = config;
-    this.card = cardTools.createCard(config.card);
+
     this.templated = [];
     this.attempts = 0;
+
+    if (config.entities)
+      config.card.entities = config.entities;
+
+    this.card = cardTools.createCard(config.card);
+    this.card.hass = this._hass;
+
+    if(this._config)
+      this._cardMod();
+
+    this._config = config;
   }
 
   render() {
@@ -33,6 +49,7 @@ class CardModder extends cardTools.litElement() {
     target = target || this.card.querySelector("ha-card");
     target = target || this.card.shadowRoot && this.card.shadowRoot.querySelector("ha-card");
     target = target || this.card.firstChild && this.card.firstChild.shadowRoot && this.card.firstChild.shadowRoot.querySelector("ha-card");
+    target = target || this.card.shadowRoot && this.card.shadowRoot.querySelector("#root") && this.card.shadowRoot.querySelector("#root").firstElementChild && this.card.shadowRoot.querySelector("#root").firstElementChild.shadowRoot && this.card.shadowRoot.querySelector("#root").firstElementChild.shadowRoot.querySelector("ha-card");
     if(!target && !this.attempts) // Try twice
       setTimeout(() => this._cardMod(), 100);
     this.attempts++;
@@ -50,6 +67,7 @@ class CardModder extends cardTools.litElement() {
   }
 
   set hass(hass) {
+    this._hass = hass;
     if(this.card) this.card.hass = hass;
     if(this.templated)
       this.templated.forEach((k) => {
