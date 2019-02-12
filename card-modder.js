@@ -24,7 +24,8 @@ class CardModder extends cardTools.litElement() {
       config.card.entities = config.entities;
 
     this.card = cardTools.createCard(config.card);
-    this.card.hass = this._hass;
+    if(this._hass)
+      this.card.hass = this._hass;
 
     if(this._config)
       this._cardMod();
