@@ -51,8 +51,11 @@ class CardModder extends cardTools.litElement() {
 
     let root = this.card;
     let target = null;
+    let styles = null;
     while(!target) {
       await root.updateComplete;
+      if(root.querySelector("style"))
+        styles = root.querySelector("style");
       if(root.querySelector("ha-card")) {
         target = root.querySelector("ha-card");
         continue;
@@ -80,13 +83,25 @@ class CardModder extends cardTools.litElement() {
     this.attempts--;
     target = target || this.card;
 
-    for(var k in this._config.style) {
-      if(cardTools.hasTemplate(this._config.style[k]))
-        this.templated.push(k);
-      if(this.card.style.setProperty)
-        this.card.style.setProperty(k, '');
-      if(target.style.setProperty)
-        target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
+    if(this._config.extra_styles) {
+      if(!styles) {
+        styles = document.createElement('style');
+        root.appendChild(styles);
+      }
+      if(!styles.innerHTML.includes(this._config.extra_styles))
+        styles.innerHTML += this._config.extra_styles;
+    }
+
+    if(this._config.style) {
+      for(var k in this._config.style) {
+        if(cardTools.hasTemplate(this._config.style[k]))
+          this.templated.push(k);
+        if(this.card.style.setProperty)
+          this.card.style.setProperty(k, '');
+        if(target.style.setProperty) {
+          target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
+        }
+      }
     }
     this.target = target;
   }

@@ -13,6 +13,7 @@ For installation instructions [see this guide](https://github.com/thomasloven/ha
 | type | string | **Required** | `custom:card-modder`
 | card | object | **Required** | The card you wish to style
 | style | list | none | List of css styles to apply to card
+| extra_styles | string | none | Extra style data to add to card environment
 | report\_size | number | none | Size to report
 
 # Styling
@@ -75,6 +76,39 @@ Templates are on the form `[[ domain.entity.state ]]` or `[[ domain.entity.attri
 ![skarminspelning 2018-12-13 kl 00 05 45 mov](https://user-images.githubusercontent.com/1299821/49904941-3261e680-fe6c-11e8-8d7d-25b6fbbfc9bf.gif)
 
 
+# Extra styles
+
+Card-modder adds styles to the `ha-card` element of a lovelace card (if found). The `extra_styles` parameter can be used to inject code directly into a `style` tag being a sibling of the `ha-card`.
+
+This allows e.g. for blinking backgrounds:
+
+```yaml
+type: custom:card-modder
+style:
+  animation: [[ sensor.button_animation.state ]] 2s linear infinite
+extra_styles: >
+  @keyframes blink {
+    50% {
+      background: red;
+    }
+  }
+card:
+  type: entity-button
+  entity: light.bed_light
+```
+![extra_styles](https://user-images.githubusercontent.com/1299821/52751643-81ed9b80-2ff0-11e9-889b-65fcbbae8678.gif)
+
+Here `sensor.button_animation` is a [template sensor](https://www.home-assistant.io/components/sensor.template/) which is setup such that when the button should be blinking it has the value `blink`, and no value otherwise. E.g:
+
+```yaml
+sensor:
+  - platform: template
+    sensors:
+      button_animation
+        value_template: "{% if is_state('light.bed_light', 'off') %}blink{% endif %}
+```
+
+
 # Forcing size
 
 By default lovelace orders cards on the screen in columns. To predict where a card will pop up there are a few rules:
@@ -129,3 +163,6 @@ Any way... card-modder can be used to set what height a card should report:
     ...
 ```
 ![card-modder-sizing](https://user-images.githubusercontent.com/1299821/47842030-ce9fc480-ddbb-11e8-9062-02cfc0e8f144.png)
+
+---
+<a href="https://www.buymeacoffee.com/uqD6KHCdJ" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
