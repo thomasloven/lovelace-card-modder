@@ -108,6 +108,11 @@ sensor:
         value_template: "{% if is_state('light.bed_light', 'off') %}blink{% endif %}
 ```
 
+##
+![hd8glbnumi](https://user-images.githubusercontent.com/1299821/52778030-5943c100-3045-11e9-90f8-47624a76ac94.gif)
+
+Example by [Isabella Gross Alström](https://github.com/isabellaalstrom/HomeAssistantConfiguration).
+
 
 # Forcing size
 

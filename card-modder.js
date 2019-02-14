@@ -1,6 +1,11 @@
 customElements.whenDefined('card-tools').then(() => {
 class CardModder extends cardTools.litElement() {
 
+  constructor() {
+    super();
+    this.EL_STYLES = ["left", "top", "right", "bottom", "position"];
+  }
+
   static get properties() {
     return {
       card: {},
@@ -52,6 +57,10 @@ class CardModder extends cardTools.litElement() {
     let root = this.card;
     let target = null;
     let styles = null;
+    if(this.classList.contains("element")) {
+      target = this.card;
+      root = this;
+    }
     while(!target) {
       await root.updateComplete;
       if(root.querySelector("style"))
@@ -101,6 +110,9 @@ class CardModder extends cardTools.litElement() {
         if(target.style.setProperty) {
           target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
         }
+        if(this.classList.contains("element") && this.EL_STYLES.indexOf(k) > -1) {
+          this.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
+        }
       }
     }
     this.target = target;
@@ -112,6 +124,9 @@ class CardModder extends cardTools.litElement() {
     if(this.templated)
       this.templated.forEach((k) => {
         this.target.style.setProperty(k, cardTools.parseTemplate(this._config.style[k], ''));
+        if(this.classList.contains("element") && this.EL_STYLES.indexOf(k) > -1) {
+          this.style.setProperty(k, cardTools.parseTemplate(this._config.style[k]));
+        }
       });
   }
 
