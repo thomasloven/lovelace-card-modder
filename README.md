@@ -104,8 +104,8 @@ Here `sensor.button_animation` is a [template sensor](https://www.home-assistant
 sensor:
   - platform: template
     sensors:
-      button_animation
-        value_template: "{% if is_state('light.bed_light', 'off') %}blink{% endif %}
+      button_animation:
+        value_template: "{% if is_state('light.bed_light', 'off') %}blink{% endif %}"
 ```
 
 ##
