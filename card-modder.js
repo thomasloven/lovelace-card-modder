@@ -36,6 +36,8 @@ class CardModder extends cardTools.litElement() {
       this._cardMod();
 
     this._config = config;
+
+    window.addEventListener("location-changed", () => this.hass = this._hass);
   }
 
   createRenderRoot() {
