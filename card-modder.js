@@ -71,7 +71,7 @@ class CardModder extends cardTools.litElement() {
         target = root.querySelector("ha-card");
         continue;
       }
-      if(root.querySelector("vertical-stack-in-card") {
+      if(root.querySelector("vertical-stack-in-card")) {
         target = root.querySelector("vertical-stack-in-card");
         continue;
       }
