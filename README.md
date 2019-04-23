@@ -13,7 +13,7 @@ For installation instructions [see this guide](https://github.com/thomasloven/ha
 | type | string | **Required** | `custom:card-modder`
 | card | object | **Required** | The card you wish to style
 | style | list | none | List of css styles to apply to card
-| extra_styles | string | none | Extra style data to add to card environment
+| extra\_styles | string | none | Extra style data to add to card environment
 | report\_size | number | none | Size to report
 
 # Styling
@@ -76,6 +76,8 @@ Templates are on the form `[[ domain.entity.state ]]` or `[[ domain.entity.attri
       - light.bed_light
 ```
 ![skarminspelning 2018-12-13 kl 00 05 45 mov](https://user-images.githubusercontent.com/1299821/49904941-3261e680-fe6c-11e8-8d7d-25b6fbbfc9bf.gif)
+
+Note that this doesn't work reliably with stacks at this point.
 
 
 # Extra styles
