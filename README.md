@@ -20,6 +20,8 @@ For installation instructions [see this guide](https://github.com/thomasloven/ha
 
 card-modder can be used to apply CSS styling to any lovelace card.
 
+Styles are automatically applied recursively to all cards within stacks.
+
 Any CSS style can be used, and will be applied to the base element of the card
 (`<ha-card>`). Most cards use css variables for styling, and to find out which
 ones, I recommend either the official ["partial list of variables

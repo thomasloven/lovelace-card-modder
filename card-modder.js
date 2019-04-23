@@ -33,7 +33,7 @@ class CardModder extends cardTools.LitElement {
       this.card.hass = this._hass;
 
     if(this._config)
-      this._cardMod();
+      this._cardMod(this.card);
 
     this._config = config;
 
@@ -50,13 +50,25 @@ class CardModder extends cardTools.LitElement {
   }
 
   async firstUpdated() {
-    this._cardMod();
+    this._cardMod(this.card);
   }
 
-  async _cardMod() {
+  async _cardMod(root) {
     if(!this._config.style && !this._config.extra_styles) return;
 
-    let root = this.card;
+    let recursiveRoots = null
+    if (root._cards) {
+      // Stacks
+      recursiveRoots = root._cards;
+    } else if(root.card && root.card._cards) {
+      // CardModders containing a Stack
+      recursiveRoots = root.card._cards;
+    }
+    if (recursiveRoots && recursiveRoots.length) {
+      recursiveRoots.forEach(c => this._cardMod(c));
+      return;
+    }
+
     let target = null;
     let styles = null;
     while(!target) {
@@ -100,7 +112,7 @@ class CardModder extends cardTools.LitElement {
       root = this;
     }
     if(!target && this.attempts) // Try again
-      setTimeout(() => this._cardMod(), 100);
+      setTimeout(() => this._cardMod(root), 100);
     this.attempts--;
     target = target || this.card;
 
