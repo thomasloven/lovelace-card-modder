@@ -29,6 +29,7 @@ class CardModder extends cardTools.LitElement {
       config.card.entities = config.entities;
 
     this.card = cardTools.createCard(config.card);
+    this._cards = [this.card];
     if(this._hass)
       this.card.hass = this._hass;
 
@@ -56,16 +57,8 @@ class CardModder extends cardTools.LitElement {
   async _cardMod(root) {
     if(!this._config.style && !this._config.extra_styles) return;
 
-    let recursiveRoots = null
-    if (root._cards) {
-      // Stacks
-      recursiveRoots = root._cards;
-    } else if(root.card && root.card._cards) {
-      // CardModders containing a Stack
-      recursiveRoots = root.card._cards;
-    }
-    if (recursiveRoots && recursiveRoots.length) {
-      recursiveRoots.forEach(c => this._cardMod(c));
+    if (root._cards && root._cards.length) {
+      root._cards.forEach(c => this._cardMod(c));
       return;
     }
 
