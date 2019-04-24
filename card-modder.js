@@ -38,6 +38,8 @@ class CardModder extends cardTools.LitElement {
 
     this._config = config;
 
+    this.recurse = config.recurse !== undefined ? config.recurse : true;
+
     window.addEventListener("location-changed", () => this.hass = this._hass);
   }
 
@@ -57,7 +59,7 @@ class CardModder extends cardTools.LitElement {
   async _cardMod(root) {
     if(!this._config.style && !this._config.extra_styles) return;
 
-    if (root._cards && root._cards.length) {
+    if (this.recurse && root._cards && root._cards.length) {
       root._cards.forEach(c => this._cardMod(c));
       return;
     }
