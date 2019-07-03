@@ -1,5 +1,9 @@
 # card-modder
 
+# This is deprecated - Use [card-mod](https://github.com/thomasloven/lovelace-card-mod) instead as far as possible
+
+## Note: card-mod does not support modding entity rows - other than that it's better than card-modder in every way
+
 Allows you to style a home-assistant lovelace card
 
 This card requires [card-tools](https://github.com/thomasloven/lovelace-card-tools) to be installed.
